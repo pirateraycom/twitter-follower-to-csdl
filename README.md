@@ -9,7 +9,7 @@ Convert all the followers of an account into a single CSDL hash
 * Copy example-config.php to config.php and fill in all the details (see below for how to get Twitter credentials)
 * `php fetch.php <screen_name_here>`
 * The DataSift CSDL hash will be created
-* Any errors will be reports
+* Any errors will be reported
 
 ## Getting twitter credentials
 
