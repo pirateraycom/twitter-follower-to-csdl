@@ -25,8 +25,12 @@ $twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_
 
 //Request params
 $params = array(
-	'screen_name' => $screen_name
+	'screen_name' => $screen_name,
 );
+//File to log user id's to
+$file = './' . $screen_name . '_' . time();
+$handle = fopen($file, 'w') or die('Cannot open file:  '.$file);
+fclose($handle);
 
 //Request count
 $request_count = 1;
@@ -67,6 +71,10 @@ while($cursor != '0') {
 	if (isset($json['ids'])) {
 		foreach ($json['ids'] as $id){
 			$ids[$id] = $id;
+			
+			//Write user id to file
+			$handle = fopen($file, 'a');
+			fwrite($handle, $id . "\n");
 		}
 		echo " (" . count($ids) . ")\n";
 	} else {
@@ -80,7 +88,7 @@ while($cursor != '0') {
 	}
 
 
-	//Check for a curso
+	//Check for a cursor
 	if (isset($json['next_cursor_str'])) {
 		$cursor = $json['next_cursor_str'];
 		$request_count++;
@@ -101,6 +109,9 @@ if (count($hashes) > 1) {
 	}
 	$final_hash = compileCsdl(implode(' OR ', $streams));
 }
+
+//Close the file
+fclose($handle);
 
 echo 'This is your DataSift hash: ' . $final_hash . "\n";
 
